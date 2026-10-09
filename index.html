@@ -2,14 +2,16 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<title>HYPERSENSEINDIA • Admin Control</title>
+<title>HYPERSENSEINDIA • Admin</title>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <style>
   :root{--bg:#070b12;--bg2:#0d1420;--card:#111a29;--line:#1c2839;--txt:#e6f1ff;
-    --dim:#7c8da3;--acc:#00e5a0;--acc2:#00b377;--danger:#ff4d6d;--warn:#ffb020;--dc:#5865F2}
+    --dim:#7c8da3;--acc:#00e5a0;--acc2:#00b377;--danger:#ff4d6d;--warn:#ffb020;
+    --dc:#5865F2;--res:#8a9bff}
   *{box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI',Inter,system-ui,sans-serif}
   body{background:var(--bg);color:var(--txt);min-height:100vh}
   .hidden{display:none!important}
+
   #loginView{display:flex;align-items:center;justify-content:center;min-height:100vh;
     background:radial-gradient(circle at 50% 0%,#0d2a25 0%,#070b12 60%)}
   .loginBox{width:400px;background:var(--card);border:1px solid var(--line);
@@ -20,16 +22,20 @@
     font-weight:800;color:#001a12;font-size:22px}
   h1{font-size:22px;text-align:center;letter-spacing:2px}
   .sub{text-align:center;color:var(--acc);font-size:11px;letter-spacing:3px;margin-bottom:26px}
+
   label{display:block;font-size:12px;color:var(--dim);margin:14px 0 6px;letter-spacing:1px}
-  input,select,textarea{width:100%;padding:11px 14px;background:var(--bg2);border:1px solid var(--line);
-    border-radius:10px;color:var(--txt);font-size:14px;outline:none;transition:.2s;font-family:inherit}
+  input,select,textarea{width:100%;padding:11px 14px;background:var(--bg2);
+    border:1px solid var(--line);border-radius:10px;color:var(--txt);font-size:14px;
+    outline:none;transition:.2s;font-family:inherit}
   input:focus,select:focus,textarea:focus{border-color:var(--acc)}
+  textarea{resize:vertical;min-height:70px}
   button{cursor:pointer;border:none;border-radius:10px;font-weight:600;transition:.2s}
   .btn{width:100%;padding:12px;background:linear-gradient(135deg,var(--acc),var(--acc2));
     color:#001a12;font-size:14px;margin-top:22px;letter-spacing:1px}
   .btn:hover{filter:brightness(1.1)}
   .err{color:var(--danger);font-size:12px;text-align:center;margin-top:12px;min-height:16px}
   .ok{color:var(--acc);font-size:12px;text-align:center;margin-top:12px;min-height:16px}
+
   #dash{display:grid;grid-template-columns:250px 1fr;min-height:100vh}
   .side{background:var(--bg2);border-right:1px solid var(--line);padding:22px 16px}
   .brand{display:flex;align-items:center;gap:10px;margin-bottom:26px}
@@ -45,26 +51,39 @@
   .nav a:hover{background:var(--card);color:var(--txt)}
   .nav a.active{background:linear-gradient(135deg,rgba(0,229,160,.18),rgba(0,179,119,.08));
     color:var(--acc);border-left:3px solid var(--acc)}
+  .nav .section{font-size:9px;color:var(--dim);letter-spacing:2px;margin:14px 8px 4px}
+
   .main{padding:26px 30px}
   .topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px}
   .topbar h2{font-size:20px;letter-spacing:1px}
   .topbar .who{font-size:12px;color:var(--dim)}
   .topbar .who b{color:var(--acc)}
+  .topbar .role{font-size:9px;padding:3px 8px;border-radius:20px;margin-left:8px;
+    background:rgba(0,229,160,.18);color:var(--acc);letter-spacing:1px}
   .logout{padding:8px 14px;background:var(--danger);color:#fff;font-size:11px;
     border-radius:8px;margin-left:14px}
+  .refresh{padding:8px 14px;background:var(--bg2);color:var(--acc);font-size:11px;
+    border-radius:8px;margin-left:14px;border:1px solid var(--line);letter-spacing:1px}
+  .refresh:hover{background:var(--card);border-color:var(--acc)}
+  .refresh.spinning{animation:spin .6s linear}
+  @keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+
   .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
   .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px}
   .card h3{font-size:12px;color:var(--dim);letter-spacing:2px;margin-bottom:12px}
   .kpi{font-size:28px;font-weight:700;color:var(--acc)}
-  .kpi.danger{color:var(--danger)} .kpi.warn{color:var(--warn)} .kpi.dc{color:var(--dc)}
+  .kpi.danger{color:var(--danger)} .kpi.warn{color:var(--warn)}
+  .kpi.dc{color:var(--dc)} .kpi.res{color:var(--res)}
+
   .panel{background:var(--card);border:1px solid var(--line);border-radius:14px;
     padding:22px;margin-top:22px}
   .panel h3{font-size:13px;letter-spacing:2px;color:var(--acc);margin-bottom:16px}
   .row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
   .row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+
   table{width:100%;border-collapse:collapse;font-size:13px;margin-top:8px}
-  th{color:var(--dim);font-weight:500;font-size:11px;letter-spacing:1px;
-    text-align:left;padding:10px;border-bottom:1px solid var(--line)}
+  th{color:var(--dim);font-weight:500;font-size:11px;letter-spacing:1px;text-align:left;
+    padding:10px;border-bottom:1px solid var(--line)}
   td{padding:11px 10px;border-bottom:1px solid #16202e;vertical-align:top}
   tr:hover td{background:#0f1727}
   .badge{padding:3px 9px;border-radius:20px;font-size:10px;font-weight:600;letter-spacing:.5px}
@@ -72,28 +91,43 @@
   .off{background:rgba(255,77,109,.15);color:var(--danger)}
   .exp{background:rgba(255,176,32,.15);color:var(--warn)}
   .dcb{background:rgba(88,101,242,.18);color:#8a9bff}
+  .resb{background:rgba(138,155,255,.18);color:var(--res)}
+
   .mini{padding:6px 11px;font-size:11px;border-radius:8px;margin-right:5px;margin-bottom:4px}
   .mini.d{background:var(--danger);color:#fff}
   .mini.e{background:var(--acc);color:#001a12}
   .mini.b{background:var(--line);color:var(--txt)}
-  .mini.dc{background:var(--dc);color:#fff}
+  .mini.r{background:var(--res);color:#0a0f1c}
+
   .toast{position:fixed;bottom:24px;right:24px;background:var(--card);
     border:1px solid var(--acc);color:var(--txt);padding:14px 20px;border-radius:12px;
     font-size:13px;box-shadow:0 10px 40px rgba(0,229,160,.2);z-index:99;
     opacity:0;transform:translateY(20px);transition:.3s;max-width:400px}
   .toast.show{opacity:1;transform:translateY(0)}
   .toast.err{border-color:var(--danger);box-shadow:0 10px 40px rgba(255,77,109,.2)}
+
   .sw{width:52px;height:28px;border-radius:20px;background:#2a3444;position:relative;
     cursor:pointer;transition:.25s}
   .sw::after{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;
     border-radius:50%;background:#fff;transition:.25s}
   .sw.on{background:var(--acc)} .sw.on::after{left:27px}
   .swrow{display:flex;align-items:center;gap:14px}
+
   .modal{position:fixed;inset:0;background:rgba(0,0,0,.75);display:flex;
-    align-items:center;justify-content:center;z-index:200}
+    align-items:center;justify-content:center;z-index:200;padding:20px}
   .modal .box{background:var(--card);border:1px solid var(--line);border-radius:14px;
-    padding:26px;width:520px;max-width:92vw}
+    padding:26px;width:520px;max-width:92vw;max-height:88vh;overflow-y:auto}
   .modal h3{color:var(--acc);margin-bottom:14px;font-size:15px;letter-spacing:1px}
+
+  .keychip{display:inline-block;font-family:ui-monospace,Menlo,monospace;font-size:12px;
+    background:#0a1420;border:1px solid var(--line);padding:5px 10px;border-radius:8px;
+    color:var(--acc);cursor:pointer;margin:3px 4px 3px 0}
+  .keychip:hover{border-color:var(--acc)}
+  .searchbar{display:flex;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+  .searchbar input{flex:1;min-width:200px}
+  .note{background:#0f1727;border-left:3px solid var(--warn);padding:8px 12px;
+    border-radius:6px;font-size:12px;color:var(--dim);margin-top:10px}
+  .empty{text-align:center;color:var(--dim);padding:24px;font-size:13px}
 </style>
 </head>
 <body>
@@ -102,9 +136,9 @@
   <div class="loginBox">
     <div class="logo">HS</div>
     <h1>HYPERSENSEINDIA</h1>
-    <div class="sub">ADMIN • HYPERSMOOTH EDITION</div>
+    <div class="sub">ADMIN • CONTROL</div>
     <label>EMAIL</label>
-    <input id="lgEmail" type="email" placeholder="aswinpfi@gmail.com" />
+    <input id="lgEmail" type="email" value="aswinpfi@gmail.com" readonly />
     <label>PASSWORD</label>
     <input id="lgPass" type="password" placeholder="••••••••" />
     <button class="btn" id="lgBtn">AUTHENTICATE</button>
@@ -117,147 +151,21 @@
   <aside class="side">
     <div class="brand">
       <div class="dot">HS</div>
-      <div><b>HYPERSENSEINDIA</b><span>HYPERSMOOTH</span></div>
+      <div><b>HYPERSENSEINDIA</b><span>ADMIN</span></div>
     </div>
-    <nav class="nav">
-      <a class="active" data-tab="overview">◈ Overview</a>
-      <a data-tab="users">◈ Users</a>
-      <a data-tab="create">◈ Create User</a>
-      <a data-tab="appctrl">◈ App Control</a>
-      <a data-tab="hwid">◈ HWID Locks</a>
-      <a data-tab="verify">◈ Discord Verify</a>
-      <a data-tab="msgs">◈ Support Inbox</a>
-    </nav>
+    <nav class="nav" id="navRoot"></nav>
   </aside>
-
   <main class="main">
     <div class="topbar">
       <h2 id="pageTitle">Overview</h2>
       <div style="display:flex;align-items:center">
-        <div class="who">Logged as <b id="whoEmail">—</b></div>
+        <div class="who">Logged as <b id="whoEmail">—</b>
+          <span class="role">ADMIN</span></div>
+        <button class="refresh" id="refreshBtn">⟳ REFRESH</button>
         <button class="logout" id="logoutBtn">LOGOUT</button>
       </div>
     </div>
-
-    <section id="tab-overview">
-      <div class="grid">
-        <div class="card"><h3>TOTAL USERS</h3><div class="kpi" id="kUsers">0</div></div>
-        <div class="card"><h3>ACTIVE</h3><div class="kpi" id="kActive">0</div></div>
-        <div class="card"><h3>EXPIRED</h3><div class="kpi danger" id="kExpired">0</div></div>
-        <div class="card"><h3>HWID LOCKED</h3><div class="kpi warn" id="kHwid">0</div></div>
-        <div class="card"><h3>DISCORD LINKED</h3><div class="kpi dc" id="kDc">0</div></div>
-      </div>
-      <div class="panel">
-        <h3>QUICK INFO</h3>
-        <div class="row">
-          <div><label>Current RAR NAME</label><input id="infoRar" readonly /></div>
-          <div><label>LOGIN STATUS</label><input id="infoLogin" readonly /></div>
-        </div>
-      </div>
-    </section>
-
-    <section id="tab-users" class="hidden">
-      <div class="panel">
-        <h3>REGISTERED USERS</h3>
-        <div style="overflow-x:auto">
-        <table>
-          <thead><tr>
-            <th>EMAIL</th><th>UID</th><th>EXPIRES</th>
-            <th>HWID</th><th>DISCORD</th><th>STATUS</th><th>ACTIONS</th>
-          </tr></thead>
-          <tbody id="userBody"></tbody>
-        </table>
-        </div>
-      </div>
-    </section>
-
-    <section id="tab-create" class="hidden">
-      <div class="panel">
-        <h3>CREATE NEW USER</h3>
-        <div class="row">
-          <div><label>EMAIL</label><input id="cuEmail" placeholder="user@mail.com" /></div>
-          <div><label>PASSWORD</label><input id="cuPass" placeholder="min 6 chars" /></div>
-        </div>
-        <div class="row" style="margin-top:14px">
-          <div><label>PHONE (optional)</label><input id="cuPhone" placeholder="+91..." /></div>
-          <div><label>DISCORD ID (optional)</label><input id="cuDiscord" placeholder="user#0000 or ID" /></div>
-        </div>
-        <div class="row3" style="margin-top:14px">
-          <div><label>DAYS VALID</label><input id="cuDays" type="number" value="30" min="1"/></div>
-          <div><label>LIFETIME?</label>
-            <select id="cuLifetime"><option value="no">No (Timed)</option>
-            <option value="yes">Yes (Lifetime)</option></select></div>
-          <div><label>ROLE</label>
-            <select id="cuRole"><option value="user">User</option>
-            <option value="admin">Admin</option></select></div>
-        </div>
-        <button class="btn" style="width:220px" id="cuBtn">CREATE USER</button>
-        <div class="err" id="cuErr"></div>
-      </div>
-    </section>
-
-    <section id="tab-appctrl" class="hidden">
-      <div class="panel">
-        <h3>APPLICATION CONTROL</h3>
-        <div class="swrow" style="margin-bottom:18px">
-          <div class="sw" id="swLogin"></div>
-          <div><b>Login Gate</b>
-            <div style="font-size:11px;color:var(--dim)">When OFF, all tool logins are rejected.</div>
-          </div>
-        </div>
-        <div class="swrow" style="margin-bottom:18px">
-          <div class="sw" id="swDiscord"></div>
-          <div><b>Require Discord Verification</b>
-            <div style="font-size:11px;color:var(--dim)">Users must link Discord before unlocking RAR.</div>
-          </div>
-        </div>
-        <label>RAR FILE NAME (sent to all clients)</label>
-        <input id="acRar" placeholder="DataInput.rar" />
-        <label style="margin-top:14px">RAR PASSWORD (server-side, sent after auth)</label>
-        <input id="acPass" placeholder="your-rar-password" />
-        <button class="btn" style="width:220px" id="acSave">SAVE CONFIG</button>
-      </div>
-    </section>
-
-    <section id="tab-hwid" class="hidden">
-      <div class="panel">
-        <h3>HWID LOCKS</h3>
-        <p style="font-size:12px;color:var(--dim);margin-bottom:14px">
-          Each user is bound to the first PC that unlocks the RAR.</p>
-        <div style="overflow-x:auto">
-        <table>
-          <thead><tr><th>EMAIL</th><th>LOCKED HWID</th><th>LAST SEEN</th><th>ACTION</th></tr></thead>
-          <tbody id="hwidBody"></tbody>
-        </table>
-        </div>
-      </div>
-    </section>
-
-    <section id="tab-verify" class="hidden">
-      <div class="panel">
-        <h3>DISCORD VERIFICATION QUEUE</h3>
-        <p style="font-size:12px;color:var(--dim);margin-bottom:14px">
-          Users submitted a Discord ID from the tool. Approve to unlock access.</p>
-        <div style="overflow-x:auto">
-        <table>
-          <thead><tr><th>WHEN</th><th>EMAIL</th><th>DISCORD ID</th><th>PHONE</th><th>STATUS</th><th>ACTION</th></tr></thead>
-          <tbody id="verifyBody"></tbody>
-        </table>
-        </div>
-      </div>
-    </section>
-
-    <section id="tab-msgs" class="hidden">
-      <div class="panel">
-        <h3>SUPPORT INBOX</h3>
-        <div style="overflow-x:auto">
-        <table>
-          <thead><tr><th>WHEN</th><th>EMAIL</th><th>MESSAGE</th><th>ACTION</th></tr></thead>
-          <tbody id="msgBody"></tbody>
-        </table>
-        </div>
-      </div>
-    </section>
+    <div id="tabContent"></div>
   </main>
 </div>
 
@@ -268,7 +176,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/fireba
 import { getAuth, signInWithEmailAndPassword, signOut }
   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 import { getDatabase, ref, set as rset, get as rget, update as rupdate,
-         remove as rremove, push, onValue, serverTimestamp as rts }
+         remove as rremove }
   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
 const firebaseConfig = {
@@ -285,353 +193,832 @@ const app  = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const rtdb = getDatabase(app);
 
-/* ====== ADMIN EMAIL WHITELIST ====== */
-const ADMIN_EMAILS = ["aswinpfi@gmail.com"];
+const SUPER_ADMIN_EMAIL = "aswinpfi@gmail.com";
 
 const $ = id => document.getElementById(id);
+const esc = s => String(s ?? "").replace(/[&<>"']/g,
+  c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let toastTimer=null;
 function toast(msg, isErr=false){
-  const t = $("toast");
-  t.textContent = msg;
-  t.className = "toast show" + (isErr ? " err" : "");
-  setTimeout(()=>t.className="toast", 3500);
+  const t=$("toast"); t.textContent=msg;
+  t.className="toast show"+(isErr?" err":"");
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>t.className="toast",3500);
+}
+function genKey(){
+  const C="ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+  const s=n=>Array.from({length:n},()=>C[Math.floor(Math.random()*C.length)]).join("");
+  return `HS-${s(4)}-${s(4)}-${s(4)}`;
+}
+async function safeGet(p){
+  try{ const s=await rget(ref(rtdb,p)); return s.exists()?s.val():{}; }
+  catch{ return {}; }
+}
+async function ensureAuth(email, pass){
+  let r=await fetch(
+    `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${firebaseConfig.apiKey}`,
+    {method:"POST",headers:{"Content-Type":"application/json"},
+     body:JSON.stringify({email,password:pass,returnSecureToken:false})});
+  let data=await r.json();
+  if(!data.error) return data.localId;
+  if(data.error.message==="EMAIL_EXISTS"){
+    const r2=await fetch(
+      `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${firebaseConfig.apiKey}`,
+      {method:"POST",headers:{"Content-Type":"application/json"},
+       body:JSON.stringify({email,password:pass,returnSecureToken:false})});
+    const d2=await r2.json();
+    if(d2.error) throw new Error("Account exists but password differs.");
+    return d2.localId;
+  }
+  throw new Error(data.error.message);
 }
 
-/* ================= LOGIN ================= */
+let SESSION=null;
+let CURRENT_TAB="overview";
+let AUTO_REFRESH_TIMER=null;
+const AUTO_REFRESH_MS = 30000; // 30 seconds
+
+/* ===== LOGIN ===== */
 $("lgBtn").onclick = async () => {
-  $("lgErr").textContent = ""; $("lgOk").textContent = "";
-  const email = $("lgEmail").value.trim().toLowerCase();
-  const pass  = $("lgPass").value;
-  if(!email || !pass) return $("lgErr").textContent = "Fill both fields.";
-
-  $("lgBtn").textContent = "AUTHENTICATING...";
+  $("lgErr").textContent=""; $("lgOk").textContent="";
+  const email=$("lgEmail").value.trim().toLowerCase();
+  const pass =$("lgPass").value;
+  if(!email||!pass) return $("lgErr").textContent="Fill both fields.";
+  if(email !== SUPER_ADMIN_EMAIL){
+    $("lgErr").textContent="Only the super admin can log in here.";
+    return;
+  }
+  $("lgBtn").textContent="AUTHENTICATING…";
   try{
-    const cred = await signInWithEmailAndPassword(auth, email, pass);
-    const uid  = cred.user.uid;
-
-    // Check RTDB /users/<uid>/admin
-    let isAdmin = false;
+    const cred=await signInWithEmailAndPassword(auth,email,pass);
+    const uid=cred.user.uid;
+    SESSION={uid,email,isSuper:true};
     try{
-      const snap = await rget(ref(rtdb, `users/${uid}`));
-      const u = snap.exists() ? snap.val() : null;
-      if(u && u.admin === true) isAdmin = true;
-      else if(ADMIN_EMAILS.includes(email)){
-        // auto-create/upgrade
-        await rupdate(ref(rtdb, `users/${uid}`), {
-          email, admin: true, lifetime: true,
-          created_at: Date.now()
+      const snap=await rget(ref(rtdb,`users/${uid}`));
+      const u=snap.exists()?snap.val():{};
+      if(u.admin!==true || u.email!==email){
+        await rupdate(ref(rtdb,`users/${uid}`),{
+          email, admin:true, lifetime:true, created_at:u.created_at||Date.now()
         });
-        isAdmin = true;
       }
-    }catch(err){
-      console.warn("RTDB check:", err);
-      if(ADMIN_EMAILS.includes(email)) isAdmin = true;
-    }
-
-    if(!isAdmin){
-      await signOut(auth);
-      $("lgErr").textContent = "Access denied: not an admin.";
-      $("lgBtn").textContent = "AUTHENTICATE";
-      return;
-    }
-
-    $("lgOk").textContent = "Welcome, admin.";
+    }catch(e){ console.warn(e); }
     $("loginView").classList.add("hidden");
     $("dash").classList.remove("hidden");
-    $("whoEmail").textContent = email;
-    loadAll();
+    $("whoEmail").textContent=email;
+    buildNav(); goto("overview");
+    startAutoRefresh();
   }catch(e){
-    $("lgErr").textContent = (e.code || e.message || "").replace("auth/","");
-    $("lgBtn").textContent = "AUTHENTICATE";
+    $("lgErr").textContent=(e.code||e.message||"").replace("auth/","");
+    $("lgBtn").textContent="AUTHENTICATE";
   }
 };
-$("lgPass").addEventListener("keydown", e => e.key==="Enter" && $("lgBtn").click());
+$("lgPass").addEventListener("keydown",e=>e.key==="Enter"&&$("lgBtn").click());
 
-$("logoutBtn").onclick = async () => { await signOut(auth); location.reload(); };
+$("logoutBtn").onclick = async () => {
+  stopAutoRefresh();
+  await signOut(auth);
+  location.reload();
+};
 
-/* ================= NAV ================= */
-document.querySelectorAll(".nav a").forEach(a=>{
-  a.onclick = () => {
-    document.querySelectorAll(".nav a").forEach(x=>x.classList.remove("active"));
-    a.classList.add("active");
-    const tab = a.dataset.tab;
-    ["overview","users","create","appctrl","hwid","verify","msgs"].forEach(t=>{
-      $("tab-"+t).classList.toggle("hidden", t!==tab);
-    });
-    $("pageTitle").textContent = a.textContent.replace("◈","").trim();
-  };
+/* Manual refresh button */
+$("refreshBtn").onclick = () => {
+  const btn=$("refreshBtn");
+  btn.classList.add("spinning");
+  setTimeout(()=>btn.classList.remove("spinning"),600);
+  RENDER[CURRENT_TAB] && RENDER[CURRENT_TAB]();
+  toast("Refreshed.");
+};
+
+/* ===== AUTO-REFRESH ===== */
+function startAutoRefresh(){
+  stopAutoRefresh();
+  AUTO_REFRESH_TIMER = setInterval(()=>{
+    if(document.hidden) return;             // pause when tab is not visible
+    if(!SESSION) return;                    // only when logged in
+    RENDER[CURRENT_TAB] && RENDER[CURRENT_TAB]();
+  }, AUTO_REFRESH_MS);
+}
+function stopAutoRefresh(){
+  if(AUTO_REFRESH_TIMER){ clearInterval(AUTO_REFRESH_TIMER); AUTO_REFRESH_TIMER=null; }
+}
+document.addEventListener("visibilitychange",()=>{
+  if(!document.hidden && SESSION){
+    RENDER[CURRENT_TAB] && RENDER[CURRENT_TAB]();
+  }
 });
 
-/* ================= LOAD ================= */
-async function loadAll(){ await loadConfig(); await loadUsers(); await loadMessages(); await loadVerify(); }
-
-async function loadConfig(){
-  try{
-    const snap = await rget(ref(rtdb, "config"));
-    const c = snap.exists() ? snap.val() : {};
-    $("infoRar").value   = c.rar_name || "DataInput.rar";
-    $("infoLogin").value = c.login_enabled === false ? "DISABLED" : "ENABLED";
-    $("acRar").value     = c.rar_name || "DataInput.rar";
-    $("acPass").value    = c.rar_password || "";
-    $("swLogin").classList.toggle("on", c.login_enabled !== false);
-    $("swDiscord").classList.toggle("on", c.require_discord === true);
-  }catch(e){ console.warn(e); }
-}
-
-async function loadUsers(){
-  const tbody = $("userBody"); tbody.innerHTML = "";
-  const hwidBody = $("hwidBody"); hwidBody.innerHTML = "";
-  let total=0, active=0, expired=0, hwid=0, dc=0;
-
-  let snap;
-  try{ snap = await rget(ref(rtdb, "users")); }
-  catch(e){ toast("Cannot read users: " + e.message, true); return; }
-
-  if(snap.exists()){
-    const users = snap.val();
-    for(const [uid, u] of Object.entries(users)){
-      total++;
-      const exp    = u.expires_at ? new Date(u.expires_at) : null;
-      const isLife = u.lifetime === true;
-      const isExp  = exp && !isLife && exp < new Date();
-      if(isLife || !isExp) active++; else expired++;
-
-      const hwidVal = u.hwid || "—";
-      if(hwidVal !== "—") hwid++;
-
-      const discordId = u.discord_id || "—";
-      if(discordId !== "—") dc++;
-
-      const tr = document.createElement("tr");
-      tr.innerHTML = `
-        <td>${u.email || "—"}</td>
-        <td style="font-size:11px;color:var(--dim)">${uid.substring(0,10)}…</td>
-        <td>${isLife ? '<span class="badge on">LIFETIME</span>' :
-               (exp ? exp.toLocaleDateString() : '—')}</td>
-        <td style="font-size:11px">${hwidVal === "—" ? "—" : hwidVal.substring(0,14)+"…"}</td>
-        <td style="font-size:11px">${discordId}</td>
-        <td>${isExp ? '<span class="badge off">EXPIRED</span>' :
-               '<span class="badge on">ACTIVE</span>'}</td>
-        <td>
-          <button class="mini b" data-act="life"  data-uid="${uid}">LIFETIME</button>
-          <button class="mini e" data-act="reset" data-uid="${uid}">RESET HWID</button>
-          <button class="mini dc" data-act="edit" data-uid="${uid}"
-            data-email="${u.email||''}" data-dc="${u.discord_id||''}"
-            data-ph="${u.phone||''}">EDIT DC</button>
-          <button class="mini d" data-act="del"   data-uid="${uid}">DELETE</button>
-        </td>`;
-      tbody.appendChild(tr);
-
-      if(hwidVal !== "—"){
-        const hr = document.createElement("tr");
-        hr.innerHTML = `
-          <td>${u.email || "—"}</td>
-          <td style="font-size:11px">${hwidVal}</td>
-          <td>${u.last_seen ? new Date(u.last_seen).toLocaleString() : "—"}</td>
-          <td><button class="mini e" data-act="reset" data-uid="${uid}">RESET</button></td>`;
-        hwidBody.appendChild(hr);
-      }
+/* ===== NAV ===== */
+const NAV = [
+  { section:"MAIN" },
+  { id:"overview",  label:"◈ Overview" },
+  { section:"USERS" },
+  { id:"users",     label:"◈ All Users" },
+  { id:"create",    label:"◈ Create User" },
+  { section:"RESELLERS" },
+  { id:"resellers", label:"◈ Resellers" },
+  { id:"r_create",  label:"◈ Add Reseller" },
+  { section:"SYSTEM" },
+  { id:"appctrl",   label:"◈ App Control" },
+  { id:"hwid",      label:"◈ HWID Locks" },
+  { id:"verify",    label:"◈ Discord Verify" },
+  { id:"msgs",      label:"◈ Support Inbox" }
+];
+function buildNav(){
+  const root=$("navRoot"); root.innerHTML="";
+  NAV.forEach(it=>{
+    if(it.section){
+      const s=document.createElement("div");
+      s.className="section"; s.textContent=it.section; root.appendChild(s);
+    } else {
+      const a=document.createElement("a");
+      a.dataset.tab=it.id; a.textContent=it.label;
+      a.onclick=()=>goto(it.id); root.appendChild(a);
     }
-  }
-
-  $("kUsers").textContent   = total;
-  $("kActive").textContent  = active;
-  $("kExpired").textContent = expired;
-  $("kHwid").textContent    = hwid;
-  $("kDc").textContent      = dc;
-
-  document.querySelectorAll('[data-act]').forEach(b=>{
-    b.onclick = () => handleAction(b.dataset.act, b.dataset.uid, b.dataset);
   });
 }
-
-async function handleAction(act, uid, data){
-  try{
-    if(act === "life"){
-      await rupdate(ref(rtdb, `users/${uid}`), {lifetime:true, expires_at:null});
-      toast("Lifetime granted.");
-    } else if(act === "reset"){
-      await rupdate(ref(rtdb, `users/${uid}`), {hwid:null, last_seen:null});
-      toast("HWID reset done.");
-    } else if(act === "edit"){
-      openEditDiscordModal(uid, data.email, data.dc, data.ph);
-      return;
-    } else if(act === "del"){
-      if(!confirm("Delete user record? (Auth account still remains)")) return;
-      await rremove(ref(rtdb, `users/${uid}`));
-      toast("User removed.");
-    }
-    loadUsers();
-  }catch(e){ toast(e.message, true); }
+function goto(id){
+  CURRENT_TAB=id;
+  document.querySelectorAll(".nav a").forEach(x=>
+    x.classList.toggle("active", x.dataset.tab===id));
+  $("pageTitle").textContent =
+    document.querySelector(`.nav a[data-tab="${id}"]`)?.textContent
+      .replace("◈","").trim() || id;
+  $("tabContent").innerHTML=`<div class="panel"><h3>LOADING…</h3></div>`;
+  (RENDER[id] || (()=> $("tabContent").innerHTML=
+    `<div class="panel"><h3>NOT FOUND</h3></div>`))();
 }
 
-function openEditDiscordModal(uid, email, dc, ph){
-  const m = document.createElement("div");
-  m.className = "modal";
-  m.innerHTML = `
-    <div class="box">
-      <h3>EDIT DISCORD / PHONE</h3>
-      <label>EMAIL</label><input value="${email}" readonly />
-      <label>DISCORD ID / TAG</label>
-      <input id="mDc" value="${dc}" placeholder="user#0000 or ID" />
-      <label>PHONE (optional)</label>
-      <input id="mPh" value="${ph}" placeholder="+91..." />
-      <div style="display:flex;gap:10px;margin-top:20px">
-        <button class="mini b" style="flex:1;padding:11px" id="mCancel">CANCEL</button>
-        <button class="mini e" style="flex:1;padding:11px" id="mSave">SAVE</button>
+/* ===== RENDER ===== */
+const RENDER = {};
+
+/* ---------- OVERVIEW ---------- */
+RENDER.overview = async () => {
+  const [users,resellers,keys,config] = await Promise.all([
+    safeGet("users"), safeGet("resellers"), safeGet("keys"), safeGet("config")
+  ]);
+  let active=0, expired=0, hwid=0, dc=0;
+  for(const u of Object.values(users)){
+    const isLife=u.lifetime===true;
+    const isExp=u.expires_at && !isLife && new Date(u.expires_at)<new Date();
+    if(isLife||!isExp) active++; else expired++;
+    if(u.hwid) hwid++;
+    if(u.discord_id) dc++;
+  }
+  const used = Object.values(keys).filter(k=>k.used).length;
+  const unused = Object.keys(keys).length - used;
+  $("tabContent").innerHTML=`
+    <div class="grid">
+      <div class="card"><h3>TOTAL USERS</h3><div class="kpi">${Object.keys(users).length}</div></div>
+      <div class="card"><h3>ACTIVE</h3><div class="kpi">${active}</div></div>
+      <div class="card"><h3>EXPIRED</h3><div class="kpi danger">${expired}</div></div>
+      <div class="card"><h3>HWID LOCKED</h3><div class="kpi warn">${hwid}</div></div>
+      <div class="card"><h3>DISCORD LINKED</h3><div class="kpi dc">${dc}</div></div>
+      <div class="card"><h3>RESELLERS</h3><div class="kpi res">${Object.keys(resellers).length}</div></div>
+      <div class="card"><h3>KEYS USED</h3><div class="kpi">${used}</div></div>
+      <div class="card"><h3>KEYS AVAILABLE</h3><div class="kpi warn">${unused}</div></div>
+    </div>
+    <div class="panel">
+      <h3>SYSTEM</h3>
+      <div class="row">
+        <div><label>RAR NAME</label><input readonly value="${esc(config.rar_name||'DataInput.rar')}"></div>
+        <div><label>LOGIN GATE</label><input readonly value="${config.login_enabled===false?'DISABLED':'ENABLED'}"></div>
+      </div>
+      <div class="note">Auto-refresh every 30s. Last update: ${new Date().toLocaleTimeString()}</div>
+    </div>`;
+};
+
+/* ---------- ALL USERS (grouped by owner) ---------- */
+RENDER.users = async () => {
+  $("tabContent").innerHTML=`
+    <div class="panel">
+      <h3>ALL USERS</h3>
+      <div class="searchbar">
+        <input id="uSearch" placeholder="Search email / uid / discord / hwid / note…"/>
+        <select id="uOwner" style="max-width:240px">
+          <option value="all">All owners</option>
+          <option value="__admin__">Admin-owned</option>
+        </select>
+        <select id="uFilter" style="max-width:200px">
+          <option value="all">All status</option>
+          <option value="active">Active</option>
+          <option value="expired">Expired</option>
+          <option value="lifetime">Lifetime</option>
+        </select>
+      </div>
+      <div id="uGroupInfo" style="font-size:12px;color:var(--dim);margin-bottom:8px"></div>
+      <div style="overflow-x:auto">
+        <table>
+          <thead><tr>
+            <th>EMAIL</th><th>UID</th><th>OWNER</th><th>EXPIRES</th>
+            <th>HWID</th><th>DISCORD</th><th>NOTE</th><th>STATUS</th><th>ACTIONS</th>
+          </tr></thead>
+          <tbody id="uBody"></tbody>
+        </table>
       </div>
     </div>`;
-  document.body.appendChild(m);
-  $("mCancel").onclick = () => m.remove();
-  $("mSave").onclick = async () => {
-    const dc2 = $("mDc").value.trim();
-    const ph2 = $("mPh").value.trim();
-    await rupdate(ref(rtdb, `users/${uid}`), {
-      discord_id: dc2, phone: ph2, discord_verified: !!dc2
-    });
-    toast("Updated."); m.remove(); loadUsers();
-  };
-}
 
-/* ================= CREATE USER ================= */
-$("cuBtn").onclick = async () => {
-  $("cuErr").textContent = "";
-  const email   = $("cuEmail").value.trim();
-  const pass    = $("cuPass").value;
-  const phone   = $("cuPhone").value.trim();
-  const discord = $("cuDiscord").value.trim();
-  const days    = parseInt($("cuDays").value || "30");
-  const life    = $("cuLifetime").value === "yes";
-  const role    = $("cuRole").value;
-  if(!email || pass.length < 6)
-    return $("cuErr").textContent = "Email + 6-char password required.";
+  const users=await safeGet("users");
+  const resellers=await safeGet("resellers");
+  const rows=Object.entries(users).map(([uid,u])=>({uid,...u}));
 
-  try{
-    const r = await fetch(
-      `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${firebaseConfig.apiKey}`,
-      {method:"POST", headers:{"Content-Type":"application/json"},
-       body: JSON.stringify({email, password: pass, returnSecureToken:false})}
-    );
-    const data = await r.json();
-    if(data.error) throw new Error(data.error.message);
-
-    const uid = data.localId;
-    const expires = life ? null : new Date(Date.now() + days*86400000).toISOString();
-
-    await rset(ref(rtdb, `users/${uid}`), {
-      email, admin: role==="admin",
-      lifetime: life, expires_at: expires,
-      hwid: null, phone: phone || null,
-      discord_id: discord || null,
-      discord_verified: !!discord,
-      created_at: Date.now()
+  const ownerSel=$("uOwner");
+  Object.entries(resellers)
+    .sort((a,b)=>String(a[0]).localeCompare(String(b[0])))
+    .forEach(([rid,r])=>{
+      const o=document.createElement("option");
+      o.value=rid;
+      const count=rows.filter(x=>x.reseller_id===rid).length;
+      o.textContent=`${r.name||r.email||rid} (${rid}) — ${count}`;
+      ownerSel.appendChild(o);
     });
 
-    toast("User created ✔");
-    $("cuEmail").value=""; $("cuPass").value="";
-    $("cuPhone").value=""; $("cuDiscord").value="";
-    loadUsers();
-  }catch(e){ $("cuErr").textContent = e.message; }
-};
-
-/* ================= APP CONTROL ================= */
-$("swLogin").onclick = async () => {
-  const el = $("swLogin"); const n = !el.classList.contains("on");
-  el.classList.toggle("on", n);
-  await rset(ref(rtdb, "config/login_enabled"), n);
-  toast("Login gate " + (n ? "ENABLED" : "DISABLED"));
-};
-$("swDiscord").onclick = async () => {
-  const el = $("swDiscord"); const n = !el.classList.contains("on");
-  el.classList.toggle("on", n);
-  await rset(ref(rtdb, "config/require_discord"), n);
-  toast("Discord verify " + (n ? "REQUIRED" : "DISABLED"));
-};
-$("acSave").onclick = async () => {
-  const rarName = $("acRar").value.trim() || "DataInput.rar";
-  const rarPass = $("acPass").value;
-  await rset(ref(rtdb, "config/rar_name"), rarName);
-  await rset(ref(rtdb, "config/rar_password"), rarPass);
-  toast("Config saved."); loadConfig();
-};
-
-/* ================= VERIFY QUEUE ================= */
-async function loadVerify(){
-  const tbody = $("verifyBody"); tbody.innerHTML = "";
-  try{
-    const snap = await rget(ref(rtdb, "verify_queue"));
-    if(!snap.exists()) return;
-    const q = snap.val();
-    Object.entries(q).reverse().forEach(([k, v])=>{
-      const tr = document.createElement("tr");
-      tr.innerHTML = `
-        <td style="font-size:11px">${new Date(v.ts).toLocaleString()}</td>
-        <td>${v.email || "—"}</td>
-        <td><b style="color:#8a9bff">${v.discord_id || "—"}</b></td>
-        <td>${v.phone || "—"}</td>
-        <td>${v.status === "approved" ? '<span class="badge on">APPROVED</span>' :
-               v.status === "rejected" ? '<span class="badge off">REJECTED</span>' :
-               '<span class="badge exp">PENDING</span>'}</td>
-        <td>
-          <button class="mini e"  data-va="approve" data-k="${k}" data-uid="${v.uid}">APPROVE</button>
-          <button class="mini d"  data-va="reject"  data-k="${k}">REJECT</button>
-          <button class="mini b"  data-va="clear"   data-k="${k}">CLEAR</button>
-        </td>`;
-      tbody.appendChild(tr);
-    });
-    document.querySelectorAll('[data-va]').forEach(b=>{
-      b.onclick = () => verifyAction(b.dataset.va, b.dataset.k, b.dataset.uid);
-    });
-  }catch(e){ console.warn(e); }
-}
-
-async function verifyAction(act, key, uid){
-  try{
-    if(act === "approve"){
-      const snap = await rget(ref(rtdb, `verify_queue/${key}`));
-      const v = snap.val();
-      if(uid){
-        await rupdate(ref(rtdb, `users/${uid}`), {
-          discord_id: v.discord_id, phone: v.phone,
-          discord_verified: true, verified_at: Date.now()
-        });
+  function render(){
+    const q=($("uSearch").value||"").toLowerCase();
+    const owner=$("uOwner").value;
+    const f=$("uFilter").value;
+    const tb=$("uBody"); tb.innerHTML="";
+    const filtered = rows.filter(u=>{
+      const isLife=u.lifetime===true;
+      const isExp=u.expires_at && !isLife && new Date(u.expires_at)<new Date();
+      if(f==="active" && isExp) return false;
+      if(f==="expired" && !isExp) return false;
+      if(f==="lifetime" && !isLife) return false;
+      if(owner==="__admin__"){
+        if(u.reseller_id) return false;
+      } else if(owner!=="all"){
+        if(u.reseller_id!==owner) return false;
       }
-      await rupdate(ref(rtdb, `verify_queue/${key}`), {status:"approved"});
-      toast("Approved ✔");
-    } else if(act === "reject"){
-      await rupdate(ref(rtdb, `verify_queue/${key}`), {status:"rejected"});
-      toast("Rejected.");
-    } else if(act === "clear"){
-      await rremove(ref(rtdb, `verify_queue/${key}`));
-      toast("Cleared.");
-    }
-    loadVerify();
-  }catch(e){ toast(e.message, true); }
-}
+      if(!q) return true;
+      const blob=[u.email,u.uid,u.discord_id,u.hwid,u.note,u.reseller_id,u.phone]
+        .filter(Boolean).join(" ").toLowerCase();
+      return blob.includes(q);
+    });
 
-/* ================= MESSAGES ================= */
-async function loadMessages(){
-  const tbody = $("msgBody"); tbody.innerHTML = "";
-  try{
-    const snap = await rget(ref(rtdb, "messages"));
-    if(!snap.exists()) return;
-    const msgs = snap.val();
-    Object.entries(msgs).reverse().forEach(([k, m])=>{
-      const tr = document.createElement("tr");
-      tr.innerHTML = `
-        <td style="font-size:11px">${new Date(m.ts).toLocaleString()}</td>
-        <td>${m.email || "anon"}</td>
-        <td style="max-width:400px">${(m.text||"").replace(/</g,"&lt;")}</td>
-        <td><button class="mini d" data-mid="${k}">CLEAR</button></td>`;
-      tbody.appendChild(tr);
+    if(owner==="all"){
+      $("uGroupInfo").textContent = `${filtered.length} users total`;
+    } else if(owner==="__admin__"){
+      $("uGroupInfo").textContent = `Admin-owned: ${filtered.length} users`;
+    } else {
+      const r=resellers[owner]||{};
+      $("uGroupInfo").textContent = `Reseller: ${r.name||r.email||owner} (${owner}) — ${filtered.length} users`;
+    }
+
+    if(!filtered.length){
+      tb.innerHTML=`<tr><td colspan="9" class="empty">No users found.</td></tr>`;
+      return;
+    }
+
+    filtered.forEach(u=>{
+      const isLife=u.lifetime===true;
+      const exp=u.expires_at?new Date(u.expires_at):null;
+      const isExp=exp && !isLife && exp<new Date();
+      const isSuper=(u.email||"").toLowerCase()===SUPER_ADMIN_EMAIL;
+      const ownerLabel=u.reseller_id
+        ? ((resellers[u.reseller_id]?.name||u.reseller_id) + " (" + u.reseller_id + ")")
+        : (u.admin===true ? "ADMIN" : "—");
+      const tr=document.createElement("tr");
+      tr.innerHTML=`
+        <td>${esc(u.email||"—")}${isSuper?' <span class="badge on">SUPER</span>':''}</td>
+        <td style="font-size:11px;color:var(--dim)">${esc((u.uid||"").substring(0,10))}…</td>
+        <td style="font-size:11px">${esc(ownerLabel)}</td>
+        <td>${isLife?'<span class="badge on">LIFETIME</span>':esc(exp?exp.toLocaleDateString():"—")}</td>
+        <td style="font-size:11px">${u.hwid?esc(u.hwid.substring(0,14))+"…":"—"}</td>
+        <td style="font-size:11px">${esc(u.discord_id||"—")}</td>
+        <td style="font-size:11px;max-width:180px;color:var(--warn)">
+          ${u.note?esc(u.note):'<span style="color:var(--dim)">—</span>'}
+        </td>
+        <td>${isExp?'<span class="badge off">EXPIRED</span>':'<span class="badge on">ACTIVE</span>'}</td>
+        <td>
+          <button class="mini b"  data-a="edit" data-uid="${u.uid}">EDIT</button>
+          <button class="mini b"  data-a="note" data-uid="${u.uid}">NOTE</button>
+          <button class="mini b"  data-a="life" data-uid="${u.uid}">LIFE</button>
+          <button class="mini e"  data-a="reset" data-uid="${u.uid}">HWID</button>
+          ${isSuper?"":`<button class="mini d" data-a="del" data-uid="${u.uid}">DELETE</button>`}
+        </td>`;
+      tb.appendChild(tr);
     });
-    document.querySelectorAll("[data-mid]").forEach(b=>{
-      b.onclick = async () => {
-        await rremove(ref(rtdb, "messages/" + b.dataset.mid));
-        loadMessages();
+    tb.querySelectorAll("[data-a]").forEach(b=>{
+      b.onclick=()=>userAction(b.dataset.a,b.dataset.uid);
+    });
+  }
+  $("uSearch").addEventListener("input",render);
+  $("uOwner").addEventListener("change",render);
+  $("uFilter").addEventListener("change",render);
+  render();
+
+  async function userAction(act,uid){
+    const u=rows.find(x=>x.uid===uid);
+    const isSuper=(u?.email||"").toLowerCase()===SUPER_ADMIN_EMAIL;
+    if(isSuper && (act==="del"||act==="life"||act==="reset"||act==="edit"))
+      return toast("Cannot modify the super admin.",true);
+    try{
+      if(act==="edit"){
+        return openUserEditModal(uid,u);
+      } else if(act==="note"){
+        const v=prompt("Note for this user:",u?.note||"");
+        if(v===null) return;
+        await rupdate(ref(rtdb,`users/${uid}`),{note:v.trim()||null});
+        toast("Note updated.");
+      } else if(act==="life"){
+        await rupdate(ref(rtdb,`users/${uid}`),{lifetime:true,expires_at:null});
+        toast("Lifetime granted.");
+      } else if(act==="reset"){
+        await rupdate(ref(rtdb,`users/${uid}`),{hwid:null,last_seen:null});
+        toast("HWID reset.");
+      } else if(act==="del"){
+        if(!confirm("Delete this user record? (Auth account remains)")) return;
+        await rremove(ref(rtdb,`users/${uid}`));
+        toast("Removed.");
+      }
+      RENDER.users();
+    }catch(e){ toast(e.message,true); }
+  }
+
+  function openUserEditModal(uid,u){
+    const m=document.createElement("div");
+    m.className="modal";
+    m.innerHTML=`
+      <div class="box">
+        <h3>EDIT USER</h3>
+        <label>EMAIL</label><input id="euEmail" value="${esc(u.email||'')}"/>
+        <div class="row" style="margin-top:14px">
+          <div><label>PHONE</label><input id="euPhone" value="${esc(u.phone||'')}"/></div>
+          <div><label>DISCORD ID</label><input id="euDiscord" value="${esc(u.discord_id||'')}"/></div>
+        </div>
+        <div class="row" style="margin-top:14px">
+          <div><label>DAYS VALID (from now)</label><input id="euDays" type="number" value="30" min="1"/></div>
+          <div><label>LIFETIME?</label>
+            <select id="euLife">
+              <option value="no" ${u.lifetime?"":"selected"}>No (Timed)</option>
+              <option value="yes" ${u.lifetime?"selected":""}>Yes (Lifetime)</option>
+            </select></div>
+        </div>
+        <div class="row" style="margin-top:14px">
+          <div><label>HWID</label><input id="euHwid" value="${esc(u.hwid||'')}"/></div>
+          <div><label>ADMIN?</label>
+            <select id="euAdmin">
+              <option value="no" ${u.admin?"":"selected"}>No</option>
+              <option value="yes" ${u.admin?"selected":""}>Yes</option>
+            </select></div>
+        </div>
+        <div style="margin-top:14px">
+          <label>NOTE</label>
+          <textarea id="euNote">${esc(u.note||'')}</textarea>
+        </div>
+        <div style="display:flex;gap:10px;margin-top:20px">
+          <button class="mini b" style="flex:1;padding:11px" id="euCancel">CANCEL</button>
+          <button class="mini e" style="flex:1;padding:11px" id="euSave">SAVE</button>
+        </div>
+      </div>`;
+    document.body.appendChild(m);
+    $("euCancel").onclick=()=>m.remove();
+    $("euSave").onclick=async()=>{
+      try{
+        const life=$("euLife").value==="yes";
+        const days=parseInt($("euDays").value||"30");
+        const upd={
+          email:$("euEmail").value.trim(),
+          phone:$("euPhone").value.trim()||null,
+          discord_id:$("euDiscord").value.trim()||null,
+          lifetime: life,
+          expires_at: life ? null : new Date(Date.now()+days*86400000).toISOString(),
+          hwid: $("euHwid").value.trim()||null,
+          admin: $("euAdmin").value==="yes",
+          note: $("euNote").value.trim()||null
+        };
+        await rupdate(ref(rtdb,`users/${uid}`),upd);
+        toast("User updated.");
+        m.remove(); RENDER.users();
+      }catch(e){ toast(e.message,true); }
+    };
+  }
+};
+
+/* ---------- CREATE USER ---------- */
+RENDER.create = async () => {
+  $("tabContent").innerHTML=`
+    <div class="panel">
+      <h3>CREATE NEW USER</h3>
+      <div class="row">
+        <div><label>EMAIL</label><input id="cuEmail" placeholder="user@mail.com"/></div>
+        <div><label>PASSWORD</label><input id="cuPass" placeholder="min 6 chars"/></div>
+      </div>
+      <div class="row" style="margin-top:14px">
+        <div><label>PHONE (optional)</label><input id="cuPhone" placeholder="+91…"/></div>
+        <div><label>DISCORD ID (optional)</label>
+          <input id="cuDiscord" placeholder="user#0000 or ID"/></div>
+      </div>
+      <div class="row3" style="margin-top:14px">
+        <div><label>DAYS VALID</label>
+          <input id="cuDays" type="number" value="30" min="1"/></div>
+        <div><label>LIFETIME?</label>
+          <select id="cuLifetime">
+            <option value="no">No (Timed)</option>
+            <option value="yes">Yes (Lifetime)</option>
+          </select></div>
+        <div><label>ROLE</label>
+          <select id="cuRole">
+            <option value="user">User</option>
+            <option value="admin">Admin</option>
+          </select></div>
+      </div>
+      <div style="margin-top:14px">
+        <label>NOTE (optional)</label>
+        <textarea id="cuNote" placeholder="Note about this user…"></textarea>
+      </div>
+      <button class="btn" style="width:220px" id="cuBtn">CREATE USER</button>
+      <div class="err" id="cuErr"></div>
+    </div>`;
+
+  $("cuBtn").onclick = async () => {
+    $("cuErr").textContent="";
+    const email=$("cuEmail").value.trim();
+    const pass =$("cuPass").value;
+    const phone=$("cuPhone").value.trim();
+    const discord=$("cuDiscord").value.trim();
+    const days =parseInt($("cuDays").value||"30");
+    const life =$("cuLifetime").value==="yes";
+    const role =$("cuRole").value;
+    const note =$("cuNote").value.trim();
+    if(!email || pass.length<6)
+      return $("cuErr").textContent="Email + 6-char password required.";
+    try{
+      const uid=await ensureAuth(email,pass);
+      const expires=life?null:new Date(Date.now()+days*86400000).toISOString();
+      await rset(ref(rtdb,`users/${uid}`),{
+        email, admin:role==="admin",
+        lifetime:life, expires_at:expires,
+        hwid:null, phone:phone||null,
+        discord_id:discord||null, discord_verified:!!discord,
+        note:note||null, created_at:Date.now()
+      });
+      toast("User created ✔");
+      $("cuEmail").value=""; $("cuPass").value="";
+      $("cuPhone").value=""; $("cuDiscord").value=""; $("cuNote").value="";
+    }catch(e){ $("cuErr").textContent=e.message; }
+  };
+};
+
+/* ---------- RESELLERS ---------- */
+RENDER.resellers = async () => {
+  $("tabContent").innerHTML=`
+    <div class="panel">
+      <h3>RESELLERS</h3>
+      <p style="font-size:12px;color:var(--dim);margin-bottom:12px">
+        Toggle HWID-reset & user-delete permissions per reseller.</p>
+      <div style="overflow-x:auto">
+        <table>
+          <thead><tr>
+            <th>RID</th><th>NAME</th><th>EMAIL</th><th>PHONE</th><th>DISCORD</th>
+            <th>ACTIVE</th><th>USERS</th>
+            <th>RESET HWID</th><th>DELETE USERS</th>
+            <th>ACTIONS</th>
+          </tr></thead>
+          <tbody id="rBody"></tbody>
+        </table>
+      </div>
+    </div>`;
+
+  const resellers=await safeGet("resellers");
+  const users=await safeGet("users");
+  const tb=$("rBody");
+  const rids=Object.keys(resellers).sort();
+  if(!rids.length){
+    tb.innerHTML=`<tr><td colspan="10" class="empty">No resellers yet.</td></tr>`;
+  }
+  rids.forEach(rid=>{
+    const r=resellers[rid];
+    const uc=Object.values(users).filter(u=>u.reseller_id===rid).length;
+    const canReset = r.can_reset_hwid === true;
+    const canDel   = r.can_delete_users === true;
+    const tr=document.createElement("tr");
+    tr.innerHTML=`
+      <td><span class="badge resb">${esc(rid)}</span></td>
+      <td>${esc(r.name||"—")}</td>
+      <td>${esc(r.email||"—")}</td>
+      <td>${esc(r.phone||"—")}</td>
+      <td style="font-size:11px">${esc(r.discord||"—")}</td>
+      <td>${r.active!==false?'<span class="badge on">ACTIVE</span>':
+            '<span class="badge off">DISABLED</span>'}</td>
+      <td>${uc}</td>
+      <td><div class="sw ${canReset?'on':''}" data-tog="reset" data-rid="${rid}"></div></td>
+      <td><div class="sw ${canDel?'on':''}"   data-tog="del"   data-rid="${rid}"></div></td>
+      <td>
+        <button class="mini b" data-a="edit" data-rid="${rid}">EDIT</button>
+        <button class="mini b" data-a="toggle" data-rid="${rid}">
+          ${r.active!==false?"DISABLE":"ENABLE"}</button>
+        <button class="mini d" data-a="del" data-rid="${rid}">DELETE</button>
+      </td>`;
+    tb.appendChild(tr);
+  });
+  tb.querySelectorAll("[data-tog]").forEach(el=>{
+    el.onclick=async()=>{
+      const rid=el.dataset.rid;
+      const field = el.dataset.tog==="reset" ? "can_reset_hwid" : "can_delete_users";
+      const cur = resellers[rid]?.[field] === true;
+      await rupdate(ref(rtdb,`resellers/${rid}`), { [field]: !cur });
+      toast((!cur?"Enabled ":"Disabled ")+field.replace("_"," ")+" for "+rid);
+      RENDER.resellers();
+    };
+  });
+  tb.querySelectorAll("[data-a]").forEach(b=>{
+    b.onclick=async()=>{
+      const rid=b.dataset.rid;
+      const r=resellers[rid]||{};
+      if(b.dataset.a==="toggle"){
+        await rupdate(ref(rtdb,`resellers/${rid}`),{active:!(r.active!==false)});
+        toast("Updated."); RENDER.resellers();
+      } else if(b.dataset.a==="edit"){
+        openResellerEditModal(rid,r);
+      } else {
+        if(!confirm("Delete reseller + map (auth account remains)?")) return;
+        const map=await safeGet("reseller_map");
+        const uid=Object.entries(map).find(([,v])=>v===rid)?.[0];
+        const upd={};
+        upd[`resellers/${rid}`]=null;
+        if(uid) upd[`reseller_map/${uid}`]=null;
+        await rupdate(ref(rtdb),upd);
+        toast("Deleted."); RENDER.resellers();
+      }
+    };
+  });
+
+  function openResellerEditModal(rid,r){
+    const m=document.createElement("div");
+    m.className="modal";
+    m.innerHTML=`
+      <div class="box">
+        <h3>EDIT RESELLER • ${esc(rid)}</h3>
+        <label>NAME</label><input id="erName" value="${esc(r.name||'')}"/>
+        <label style="margin-top:14px">EMAIL</label>
+        <input id="erEmail" value="${esc(r.email||'')}" readonly/>
+        <div class="row" style="margin-top:14px">
+          <div><label>PHONE</label><input id="erPhone" value="${esc(r.phone||'')}"/></div>
+          <div><label>DISCORD</label><input id="erDiscord" value="${esc(r.discord||'')}"/></div>
+        </div>
+        <div style="display:flex;gap:10px;margin-top:20px">
+          <button class="mini b" style="flex:1;padding:11px" id="erCancel">CANCEL</button>
+          <button class="mini e" style="flex:1;padding:11px" id="erSave">SAVE</button>
+        </div>
+      </div>`;
+    document.body.appendChild(m);
+    $("erCancel").onclick=()=>m.remove();
+    $("erSave").onclick=async()=>{
+      await rupdate(ref(rtdb,`resellers/${rid}`),{
+        name:$("erName").value.trim(),
+        phone:$("erPhone").value.trim()||null,
+        discord:$("erDiscord").value.trim()||null
+      });
+      toast("Saved."); m.remove(); RENDER.resellers();
+    };
+  }
+};
+
+/* ---------- ADD RESELLER ---------- */
+RENDER.r_create = async () => {
+  $("tabContent").innerHTML=`
+    <div class="panel">
+      <h3>ADD RESELLER</h3>
+      <p style="font-size:12px;color:var(--dim);margin-bottom:12px">
+        Creates Auth account + reseller record. ID auto-assigned as HS-R-0001, HS-R-0002, …</p>
+      <div class="row">
+        <div><label>EMAIL</label><input id="nrEmail" placeholder="reseller@mail.com"/></div>
+        <div><label>PASSWORD</label><input id="nrPass" placeholder="min 6 chars"/></div>
+      </div>
+      <div class="row" style="margin-top:14px">
+        <div><label>NAME</label><input id="nrName" placeholder="Ravi"/></div>
+        <div><label>PHONE</label><input id="nrPhone" placeholder="+91…"/></div>
+      </div>
+      <label style="margin-top:14px">DISCORD</label>
+      <input id="nrDiscord" placeholder="ravi#0001"/>
+      <button class="btn" style="width:240px" id="nrBtn">CREATE RESELLER</button>
+      <div class="err" id="nrErr"></div>
+      <div class="note">By default resellers canNOT reset HWID or delete users. Enable those
+        per-reseller from the <b>Resellers</b> tab.</div>
+    </div>`;
+
+  $("nrBtn").onclick = async () => {
+    $("nrErr").textContent="";
+    const email=$("nrEmail").value.trim();
+    const pass =$("nrPass").value;
+    const name =$("nrName").value.trim();
+    const phone=$("nrPhone").value.trim();
+    const dc   =$("nrDiscord").value.trim();
+    if(!email || pass.length<6)
+      return $("nrErr").textContent="Email + 6-char password required.";
+    try{
+      const uid=await ensureAuth(email,pass);
+      const counterSnap = await rget(ref(rtdb, "counters/reseller"));
+      const lastNum = counterSnap.exists() ? counterSnap.val() : 0;
+      const nextNum = lastNum + 1;
+      await rset(ref(rtdb, "counters/reseller"), nextNum);
+      const rid = "HS-R-" + String(nextNum).padStart(4, "0");
+
+      const upd={};
+      upd[`resellers/${rid}`]={
+        name:name||email, email, phone:phone||null, discord:dc||null,
+        active:true,
+        can_reset_hwid:false,
+        can_delete_users:false,
+        created_at:Date.now(), created_by:SESSION.uid
       };
-    });
-  }catch(e){ console.warn(e); }
-}
+      upd[`reseller_map/${uid}`]=rid;
+      await rupdate(ref(rtdb),upd);
+      toast("Reseller created ✔ "+rid);
+      $("nrEmail").value=""; $("nrPass").value="";
+      $("nrName").value=""; $("nrPhone").value=""; $("nrDiscord").value="";
+    }catch(e){ $("nrErr").textContent=e.message; }
+  };
+};
+
+/* ---------- APP CONTROL ---------- */
+RENDER.appctrl = async () => {
+  const config=await safeGet("config");
+  const loginOn=config.login_enabled!==false;
+  const dcOn   =config.require_discord===true;
+  $("tabContent").innerHTML=`
+    <div class="panel">
+      <h3>APPLICATION CONTROL</h3>
+      <div class="swrow" style="margin-bottom:18px">
+        <div class="sw ${loginOn?'on':''}" id="swLogin"></div>
+        <div><b>Login Gate</b>
+          <div style="font-size:11px;color:var(--dim)">When OFF, all tool logins are rejected.</div>
+        </div>
+      </div>
+      <div class="swrow" style="margin-bottom:18px">
+        <div class="sw ${dcOn?'on':''}" id="swDiscord"></div>
+        <div><b>Require Discord Verification</b>
+          <div style="font-size:11px;color:var(--dim)">Users must link Discord before unlocking RAR.</div>
+        </div>
+      </div>
+      <label>RAR FILE NAME</label>
+      <input id="acRar" value="${esc(config.rar_name||'DataInput.rar')}"/>
+      <label style="margin-top:14px">RAR PASSWORD</label>
+      <input id="acPass" value="${esc(config.rar_password||'')}"/>
+      <button class="btn" style="width:220px" id="acSave">SAVE CONFIG</button>
+    </div>`;
+
+  $("swLogin").onclick=async()=>{
+    const el=$("swLogin"); const n=!el.classList.contains("on");
+    el.classList.toggle("on",n);
+    await rset(ref(rtdb,"config/login_enabled"),n);
+    toast("Login gate "+(n?"ENABLED":"DISABLED"));
+  };
+  $("swDiscord").onclick=async()=>{
+    const el=$("swDiscord"); const n=!el.classList.contains("on");
+    el.classList.toggle("on",n);
+    await rset(ref(rtdb,"config/require_discord"),n);
+    toast("Discord verify "+(n?"REQUIRED":"DISABLED"));
+  };
+  $("acSave").onclick=async()=>{
+    await rset(ref(rtdb,"config/rar_name"), $("acRar").value.trim()||"DataInput.rar");
+    await rset(ref(rtdb,"config/rar_password"), $("acPass").value);
+    toast("Config saved.");
+  };
+};
+
+/* ---------- HWID ---------- */
+RENDER.hwid = async () => {
+  const users=await safeGet("users");
+  $("tabContent").innerHTML=`
+    <div class="panel">
+      <h3>HWID LOCKS</h3>
+      <div style="overflow-x:auto">
+        <table>
+          <thead><tr><th>EMAIL</th><th>HWID</th><th>LAST SEEN</th><th>ACTION</th></tr></thead>
+          <tbody id="hBody"></tbody>
+        </table>
+      </div>
+    </div>`;
+  const tb=$("hBody"); let n=0;
+  Object.entries(users).forEach(([uid,u])=>{
+    if(!u.hwid) return; n++;
+    const tr=document.createElement("tr");
+    tr.innerHTML=`
+      <td>${esc(u.email||"—")}</td>
+      <td style="font-size:11px">${esc(u.hwid)}</td>
+      <td>${u.last_seen?new Date(u.last_seen).toLocaleString():"—"}</td>
+      <td><button class="mini e" data-uid="${uid}">RESET</button></td>`;
+    tb.appendChild(tr);
+  });
+  if(!n) tb.innerHTML=`<tr><td colspan="4" class="empty">No locks.</td></tr>`;
+  tb.querySelectorAll("[data-uid]").forEach(b=>{
+    b.onclick=async()=>{
+      await rupdate(ref(rtdb,`users/${b.dataset.uid}`),{hwid:null,last_seen:null});
+      toast("HWID reset."); RENDER.hwid();
+    };
+  });
+};
+
+/* ---------- VERIFY ---------- */
+RENDER.verify = async () => {
+  $("tabContent").innerHTML=`
+    <div class="panel">
+      <h3>DISCORD VERIFICATION QUEUE</h3>
+      <p style="font-size:12px;color:var(--dim);margin-bottom:12px">
+        Entries submitted from the tool appear here. Approve to unlock the RAR.</p>
+      <div id="vInfo" style="font-size:12px;color:var(--dim);margin-bottom:8px"></div>
+      <div style="overflow-x:auto">
+        <table>
+          <thead><tr><th>WHEN</th><th>EMAIL</th><th>DISCORD</th><th>PHONE</th>
+            <th>STATUS</th><th>ACTIONS</th></tr></thead>
+          <tbody id="vBody"></tbody>
+        </table>
+      </div>
+      <div class="note">
+        If nothing shows up here, the tool must write to <b>verify_queue/&lt;key&gt;</b>
+        with fields <b>ts, uid, email, discord_id, phone</b>. Check DevTools of the
+        tool to confirm the write succeeded.
+      </div>
+    </div>`;
+
+  const q = await safeGet("verify_queue");
+  const entries = Object.entries(q).sort((a,b)=>(b[1].ts||0)-(a[1].ts||0));
+
+  $("vInfo").textContent = `${entries.length} entries — pending: `+
+    entries.filter(([,v])=>!v.status||v.status==="pending").length;
+
+  const tb=$("vBody");
+  if(!entries.length){
+    tb.innerHTML=`<tr><td colspan="6" class="empty">Queue is empty.</td></tr>`;
+    return;
+  }
+  entries.forEach(([k,v])=>{
+    const tr=document.createElement("tr");
+    tr.innerHTML=`
+      <td style="font-size:11px">${v.ts?new Date(v.ts).toLocaleString():"—"}</td>
+      <td>${esc(v.email||"—")}</td>
+      <td style="color:#8a9bff"><b>${esc(v.discord_id||"—")}</b></td>
+      <td>${esc(v.phone||"—")}</td>
+      <td>${v.status==="approved"?'<span class="badge on">APPROVED</span>':
+            v.status==="rejected"?'<span class="badge off">REJECTED</span>':
+            '<span class="badge exp">PENDING</span>'}</td>
+      <td>
+        <button class="mini e" data-a="ap" data-k="${k}" data-uid="${v.uid||""}">APPROVE</button>
+        <button class="mini d" data-a="rj" data-k="${k}">REJECT</button>
+        <button class="mini b" data-a="cl" data-k="${k}">CLEAR</button>
+      </td>`;
+    tb.appendChild(tr);
+  });
+  tb.querySelectorAll("[data-a]").forEach(b=>{
+    b.onclick=async()=>{
+      const k=b.dataset.k, a=b.dataset.a;
+      try{
+        if(a==="cl"){ await rremove(ref(rtdb,`verify_queue/${k}`)); toast("Cleared."); }
+        else if(a==="rj"){ await rupdate(ref(rtdb,`verify_queue/${k}`),{status:"rejected"}); toast("Rejected."); }
+        else if(a==="ap"){
+          const cur=q[k];
+          if(b.dataset.uid){
+            await rupdate(ref(rtdb,`users/${b.dataset.uid}`),{
+              discord_id: cur.discord_id||null,
+              phone: cur.phone||null,
+              discord_verified: true,
+              verified_at: Date.now()
+            });
+          }
+          await rupdate(ref(rtdb,`verify_queue/${k}`),{status:"approved"});
+          toast("Approved.");
+        }
+        RENDER.verify();
+      }catch(e){ toast(e.message,true); }
+    };
+  });
+};
+
+/* ---------- MESSAGES ---------- */
+RENDER.msgs = async () => {
+  const msgs=await safeGet("messages");
+  $("tabContent").innerHTML=`
+    <div class="panel">
+      <h3>SUPPORT INBOX</h3>
+      <div style="overflow-x:auto">
+        <table>
+          <thead><tr><th>WHEN</th><th>EMAIL</th><th>MESSAGE</th><th>ACTION</th></tr></thead>
+          <tbody id="mBody"></tbody>
+        </table>
+      </div>
+    </div>`;
+  const tb=$("mBody");
+  const entries=Object.entries(msgs).sort((a,b)=>(b[1].ts||0)-(a[1].ts||0));
+  if(!entries.length){
+    tb.innerHTML=`<tr><td colspan="4" class="empty">Empty.</td></tr>`;
+  }
+  entries.forEach(([k,m])=>{
+    const tr=document.createElement("tr");
+    tr.innerHTML=`
+      <td style="font-size:11px">${new Date(m.ts||Date.now()).toLocaleString()}</td>
+      <td>${esc(m.email||"anon")}</td>
+      <td style="max-width:400px">${esc(m.text||"")}</td>
+      <td><button class="mini d" data-k="${k}">CLEAR</button></td>`;
+    tb.appendChild(tr);
+  });
+  tb.querySelectorAll("[data-k]").forEach(b=>{
+    b.onclick=async()=>{
+      await rremove(ref(rtdb,"messages/"+b.dataset.k));
+      RENDER.msgs();
+    };
+  });
+};
 </script>
 </body>
 </html>
