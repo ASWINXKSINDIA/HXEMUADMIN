@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>HYPERSENSEINDIA • Admin Control</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<style>
+  :root{--bg:#070b12;--bg2:#0d1420;--card:#111a29;--line:#1c2839;--txt:#e6f1ff;
+    --dim:#7c8da3;--acc:#00e5a0;--acc2:#00b377;--danger:#ff4d6d;--warn:#ffb020;--dc:#5865F2}
+  *{box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI',Inter,system-ui,sans-serif}
+  body{background:var(--bg);color:var(--txt);min-height:100vh}
+  .hidden{display:none!important}
+  #loginView{display:flex;align-items:center;justify-content:center;min-height:100vh;
+    background:radial-gradient(circle at 50% 0%,#0d2a25 0%,#070b12 60%)}
+  .loginBox{width:400px;background:var(--card);border:1px solid var(--line);
+    border-radius:18px;padding:38px 32px;box-shadow:0 20px 60px rgba(0,229,160,.08)}
+  .logo{width:70px;height:70px;border-radius:50%;
+    background:conic-gradient(from 180deg,#00e5a0,#00b377,#0d2a25,#00e5a0);
+    display:flex;align-items:center;justify-content:center;margin:0 auto 14px;
+    font-weight:800;color:#001a12;font-size:22px}
+  h1{font-size:22px;text-align:center;letter-spacing:2px}
+  .sub{text-align:center;color:var(--acc);font-size:11px;letter-spacing:3px;margin-bottom:26px}
+  label{display:block;font-size:12px;color:var(--dim);margin:14px 0 6px;letter-spacing:1px}
+  input,select,textarea{width:100%;padding:11px 14px;background:var(--bg2);border:1px solid var(--line);
+    border-radius:10px;color:var(--txt);font-size:14px;outline:none;transition:.2s;font-family:inherit}
+  input:focus,select:focus,textarea:focus{border-color:var(--acc)}
+  button{cursor:pointer;border:none;border-radius:10px;font-weight:600;transition:.2s}
+  .btn{width:100%;padding:12px;background:linear-gradient(135deg,var(--acc),var(--acc2));
+    color:#001a12;font-size:14px;margin-top:22px;letter-spacing:1px}
+  .btn:hover{filter:brightness(1.1)}
+  .err{color:var(--danger);font-size:12px;text-align:center;margin-top:12px;min-height:16px}
+  .ok{color:var(--acc);font-size:12px;text-align:center;margin-top:12px;min-height:16px}
+  #dash{display:grid;grid-template-columns:250px 1fr;min-height:100vh}
+  .side{background:var(--bg2);border-right:1px solid var(--line);padding:22px 16px}
+  .brand{display:flex;align-items:center;gap:10px;margin-bottom:26px}
+  .brand .dot{width:34px;height:34px;border-radius:50%;
+    background:conic-gradient(from 180deg,#00e5a0,#00b377,#0d2a25,#00e5a0);
+    display:flex;align-items:center;justify-content:center;font-size:11px;
+    font-weight:800;color:#001a12}
+  .brand b{font-size:13px;letter-spacing:1px}
+  .brand span{display:block;font-size:9px;color:var(--acc);letter-spacing:2px}
+  .nav{display:flex;flex-direction:column;gap:6px}
+  .nav a{padding:11px 14px;border-radius:10px;color:var(--dim);text-decoration:none;
+    font-size:13px;transition:.2s;cursor:pointer}
+  .nav a:hover{background:var(--card);color:var(--txt)}
+  .nav a.active{background:linear-gradient(135deg,rgba(0,229,160,.18),rgba(0,179,119,.08));
+    color:var(--acc);border-left:3px solid var(--acc)}
+  .main{padding:26px 30px}
+  .topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px}
+  .topbar h2{font-size:20px;letter-spacing:1px}
+  .topbar .who{font-size:12px;color:var(--dim)}
+  .topbar .who b{color:var(--acc)}
+  .logout{padding:8px 14px;background:var(--danger);color:#fff;font-size:11px;
+    border-radius:8px;margin-left:14px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px}
+  .card h3{font-size:12px;color:var(--dim);letter-spacing:2px;margin-bottom:12px}
+  .kpi{font-size:28px;font-weight:700;color:var(--acc)}
+  .kpi.danger{color:var(--danger)} .kpi.warn{color:var(--warn)} .kpi.dc{color:var(--dc)}
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:22px;margin-top:22px}
+  .panel h3{font-size:13px;letter-spacing:2px;color:var(--acc);margin-bottom:16px}
+  .row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+  table{width:100%;border-collapse:collapse;font-size:13px;margin-top:8px}
+  th{color:var(--dim);font-weight:500;font-size:11px;letter-spacing:1px;
+    text-align:left;padding:10px;border-bottom:1px solid var(--line)}
+  td{padding:11px 10px;border-bottom:1px solid #16202e;vertical-align:top}
+  tr:hover td{background:#0f1727}
+  .badge{padding:3px 9px;border-radius:20px;font-size:10px;font-weight:600;letter-spacing:.5px}
+  .on{background:rgba(0,229,160,.15);color:var(--acc)}
+  .off{background:rgba(255,77,109,.15);color:var(--danger)}
+  .exp{background:rgba(255,176,32,.15);color:var(--warn)}
+  .dcb{background:rgba(88,101,242,.18);color:#8a9bff}
+  .mini{padding:6px 11px;font-size:11px;border-radius:8px;margin-right:5px;margin-bottom:4px}
+  .mini.d{background:var(--danger);color:#fff}
+  .mini.e{background:var(--acc);color:#001a12}
+  .mini.b{background:var(--line);color:var(--txt)}
+  .mini.dc{background:var(--dc);color:#fff}
+  .toast{position:fixed;bottom:24px;right:24px;background:var(--card);
+    border:1px solid var(--acc);color:var(--txt);padding:14px 20px;border-radius:12px;
+    font-size:13px;box-shadow:0 10px 40px rgba(0,229,160,.2);z-index:99;
+    opacity:0;transform:translateY(20px);transition:.3s;max-width:400px}
+  .toast.show{opacity:1;transform:translateY(0)}
+  .toast.err{border-color:var(--danger);box-shadow:0 10px 40px rgba(255,77,109,.2)}
+  .sw{width:52px;height:28px;border-radius:20px;background:#2a3444;position:relative;
+    cursor:pointer;transition:.25s}
+  .sw::after{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;
+    border-radius:50%;background:#fff;transition:.25s}
+  .sw.on{background:var(--acc)} .sw.on::after{left:27px}
+  .swrow{display:flex;align-items:center;gap:14px}
+  .modal{position:fixed;inset:0;background:rgba(0,0,0,.75);display:flex;
+    align-items:center;justify-content:center;z-index:200}
+  .modal .box{background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:26px;width:520px;max-width:92vw}
+  .modal h3{color:var(--acc);margin-bottom:14px;font-size:15px;letter-spacing:1px}
+</style>
+</head>
+<body>
+
+<div id="loginView">
+  <div class="loginBox">
+    <div class="logo">HS</div>
+    <h1>HYPERSENSEINDIA</h1>
+    <div class="sub">ADMIN • HYPERSMOOTH EDITION</div>
+    <label>EMAIL</label>
+    <input id="lgEmail" type="email" placeholder="aswinpfi@gmail.com" />
+    <label>PASSWORD</label>
+    <input id="lgPass" type="password" placeholder="••••••••" />
+    <button class="btn" id="lgBtn">AUTHENTICATE</button>
+    <div class="err" id="lgErr"></div>
+    <div class="ok" id="lgOk"></div>
+  </div>
+</div>
+
+<div id="dash" class="hidden">
+  <aside class="side">
+    <div class="brand">
+      <div class="dot">HS</div>
+      <div><b>HYPERSENSEINDIA</b><span>HYPERSMOOTH</span></div>
+    </div>
+    <nav class="nav">
+      <a class="active" data-tab="overview">◈ Overview</a>
+      <a data-tab="users">◈ Users</a>
+      <a data-tab="create">◈ Create User</a>
+      <a data-tab="appctrl">◈ App Control</a>
+      <a data-tab="hwid">◈ HWID Locks</a>
+      <a data-tab="verify">◈ Discord Verify</a>
+      <a data-tab="msgs">◈ Support Inbox</a>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">
+      <h2 id="pageTitle">Overview</h2>
+      <div style="display:flex;align-items:center">
+        <div class="who">Logged as <b id="whoEmail">—</b></div>
+        <button class="logout" id="logoutBtn">LOGOUT</button>
+      </div>
+    </div>
+
+    <section id="tab-overview">
+      <div class="grid">
+        <div class="card"><h3>TOTAL USERS</h3><div class="kpi" id="kUsers">0</div></div>
+        <div class="card"><h3>ACTIVE</h3><div class="kpi" id="kActive">0</div></div>
+        <div class="card"><h3>EXPIRED</h3><div class="kpi danger" id="kExpired">0</div></div>
+        <div class="card"><h3>HWID LOCKED</h3><div class="kpi warn" id="kHwid">0</div></div>
+        <div class="card"><h3>DISCORD LINKED</h3><div class="kpi dc" id="kDc">0</div></div>
+      </div>
+      <div class="panel">
+        <h3>QUICK INFO</h3>
+        <div class="row">
+          <div><label>Current RAR NAME</label><input id="infoRar" readonly /></div>
+          <div><label>LOGIN STATUS</label><input id="infoLogin" readonly /></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="tab-users" class="hidden">
+      <div class="panel">
+        <h3>REGISTERED USERS</h3>
+        <div style="overflow-x:auto">
+        <table>
+          <thead><tr>
+            <th>EMAIL</th><th>UID</th><th>EXPIRES</th>
+            <th>HWID</th><th>DISCORD</th><th>STATUS</th><th>ACTIONS</th>
+          </tr></thead>
+          <tbody id="userBody"></tbody>
+        </table>
+        </div>
+      </div>
+    </section>
+
+    <section id="tab-create" class="hidden">
+      <div class="panel">
+        <h3>CREATE NEW USER</h3>
+        <div class="row">
+          <div><label>EMAIL</label><input id="cuEmail" placeholder="user@mail.com" /></div>
+          <div><label>PASSWORD</label><input id="cuPass" placeholder="min 6 chars" /></div>
+        </div>
+        <div class="row" style="margin-top:14px">
+          <div><label>PHONE (optional)</label><input id="cuPhone" placeholder="+91..." /></div>
+          <div><label>DISCORD ID (optional)</label><input id="cuDiscord" placeholder="user#0000 or ID" /></div>
+        </div>
+        <div class="row3" style="margin-top:14px">
+          <div><label>DAYS VALID</label><input id="cuDays" type="number" value="30" min="1"/></div>
+          <div><label>LIFETIME?</label>
+            <select id="cuLifetime"><option value="no">No (Timed)</option>
+            <option value="yes">Yes (Lifetime)</option></select></div>
+          <div><label>ROLE</label>
+            <select id="cuRole"><option value="user">User</option>
+            <option value="admin">Admin</option></select></div>
+        </div>
+        <button class="btn" style="width:220px" id="cuBtn">CREATE USER</button>
+        <div class="err" id="cuErr"></div>
+      </div>
+    </section>
+
+    <section id="tab-appctrl" class="hidden">
+      <div class="panel">
+        <h3>APPLICATION CONTROL</h3>
+        <div class="swrow" style="margin-bottom:18px">
+          <div class="sw" id="swLogin"></div>
+          <div><b>Login Gate</b>
+            <div style="font-size:11px;color:var(--dim)">When OFF, all tool logins are rejected.</div>
+          </div>
+        </div>
+        <div class="swrow" style="margin-bottom:18px">
+          <div class="sw" id="swDiscord"></div>
+          <div><b>Require Discord Verification</b>
+            <div style="font-size:11px;color:var(--dim)">Users must link Discord before unlocking RAR.</div>
+          </div>
+        </div>
+        <label>RAR FILE NAME (sent to all clients)</label>
+        <input id="acRar" placeholder="DataInput.rar" />
+        <label style="margin-top:14px">RAR PASSWORD (server-side, sent after auth)</label>
+        <input id="acPass" placeholder="your-rar-password" />
+        <button class="btn" style="width:220px" id="acSave">SAVE CONFIG</button>
+      </div>
+    </section>
+
+    <section id="tab-hwid" class="hidden">
+      <div class="panel">
+        <h3>HWID LOCKS</h3>
+        <p style="font-size:12px;color:var(--dim);margin-bottom:14px">
+          Each user is bound to the first PC that unlocks the RAR.</p>
+        <div style="overflow-x:auto">
+        <table>
+          <thead><tr><th>EMAIL</th><th>LOCKED HWID</th><th>LAST SEEN</th><th>ACTION</th></tr></thead>
+          <tbody id="hwidBody"></tbody>
+        </table>
+        </div>
+      </div>
+    </section>
+
+    <section id="tab-verify" class="hidden">
+      <div class="panel">
+        <h3>DISCORD VERIFICATION QUEUE</h3>
+        <p style="font-size:12px;color:var(--dim);margin-bottom:14px">
+          Users submitted a Discord ID from the tool. Approve to unlock access.</p>
+        <div style="overflow-x:auto">
+        <table>
+          <thead><tr><th>WHEN</th><th>EMAIL</th><th>DISCORD ID</th><th>PHONE</th><th>STATUS</th><th>ACTION</th></tr></thead>
+          <tbody id="verifyBody"></tbody>
+        </table>
+        </div>
+      </div>
+    </section>
+
+    <section id="tab-msgs" class="hidden">
+      <div class="panel">
+        <h3>SUPPORT INBOX</h3>
+        <div style="overflow-x:auto">
+        <table>
+          <thead><tr><th>WHEN</th><th>EMAIL</th><th>MESSAGE</th><th>ACTION</th></tr></thead>
+          <tbody id="msgBody"></tbody>
+        </table>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword, signOut }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getDatabase, ref, set as rset, get as rget, update as rupdate,
+         remove as rremove, push, onValue, serverTimestamp as rts }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAFf_skp9nhvdWHyJy_ICGdW8r01EmGlss",
+  authDomain: "hypersenseauth.firebaseapp.com",
+  projectId: "hypersenseauth",
+  databaseURL: "https://hypersenseauth-default-rtdb.firebaseio.com/",
+  storageBucket: "hypersenseauth.firebasestorage.app",
+  messagingSenderId: "638076403379",
+  appId: "1:638076403379:web:90de28063ab1c19c6fbac6"
+};
+
+const app  = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const rtdb = getDatabase(app);
+
+/* ====== ADMIN EMAIL WHITELIST ====== */
+const ADMIN_EMAILS = ["aswinpfi@gmail.com"];
+
+const $ = id => document.getElementById(id);
+function toast(msg, isErr=false){
+  const t = $("toast");
+  t.textContent = msg;
+  t.className = "toast show" + (isErr ? " err" : "");
+  setTimeout(()=>t.className="toast", 3500);
+}
+
+/* ================= LOGIN ================= */
+$("lgBtn").onclick = async () => {
+  $("lgErr").textContent = ""; $("lgOk").textContent = "";
+  const email = $("lgEmail").value.trim().toLowerCase();
+  const pass  = $("lgPass").value;
+  if(!email || !pass) return $("lgErr").textContent = "Fill both fields.";
+
+  $("lgBtn").textContent = "AUTHENTICATING...";
+  try{
+    const cred = await signInWithEmailAndPassword(auth, email, pass);
+    const uid  = cred.user.uid;
+
+    // Check RTDB /users/<uid>/admin
+    let isAdmin = false;
+    try{
+      const snap = await rget(ref(rtdb, `users/${uid}`));
+      const u = snap.exists() ? snap.val() : null;
+      if(u && u.admin === true) isAdmin = true;
+      else if(ADMIN_EMAILS.includes(email)){
+        // auto-create/upgrade
+        await rupdate(ref(rtdb, `users/${uid}`), {
+          email, admin: true, lifetime: true,
+          created_at: Date.now()
+        });
+        isAdmin = true;
+      }
+    }catch(err){
+      console.warn("RTDB check:", err);
+      if(ADMIN_EMAILS.includes(email)) isAdmin = true;
+    }
+
+    if(!isAdmin){
+      await signOut(auth);
+      $("lgErr").textContent = "Access denied: not an admin.";
+      $("lgBtn").textContent = "AUTHENTICATE";
+      return;
+    }
+
+    $("lgOk").textContent = "Welcome, admin.";
+    $("loginView").classList.add("hidden");
+    $("dash").classList.remove("hidden");
+    $("whoEmail").textContent = email;
+    loadAll();
+  }catch(e){
+    $("lgErr").textContent = (e.code || e.message || "").replace("auth/","");
+    $("lgBtn").textContent = "AUTHENTICATE";
+  }
+};
+$("lgPass").addEventListener("keydown", e => e.key==="Enter" && $("lgBtn").click());
+
+$("logoutBtn").onclick = async () => { await signOut(auth); location.reload(); };
+
+/* ================= NAV ================= */
+document.querySelectorAll(".nav a").forEach(a=>{
+  a.onclick = () => {
+    document.querySelectorAll(".nav a").forEach(x=>x.classList.remove("active"));
+    a.classList.add("active");
+    const tab = a.dataset.tab;
+    ["overview","users","create","appctrl","hwid","verify","msgs"].forEach(t=>{
+      $("tab-"+t).classList.toggle("hidden", t!==tab);
+    });
+    $("pageTitle").textContent = a.textContent.replace("◈","").trim();
+  };
+});
+
+/* ================= LOAD ================= */
+async function loadAll(){ await loadConfig(); await loadUsers(); await loadMessages(); await loadVerify(); }
+
+async function loadConfig(){
+  try{
+    const snap = await rget(ref(rtdb, "config"));
+    const c = snap.exists() ? snap.val() : {};
+    $("infoRar").value   = c.rar_name || "DataInput.rar";
+    $("infoLogin").value = c.login_enabled === false ? "DISABLED" : "ENABLED";
+    $("acRar").value     = c.rar_name || "DataInput.rar";
+    $("acPass").value    = c.rar_password || "";
+    $("swLogin").classList.toggle("on", c.login_enabled !== false);
+    $("swDiscord").classList.toggle("on", c.require_discord === true);
+  }catch(e){ console.warn(e); }
+}
+
+async function loadUsers(){
+  const tbody = $("userBody"); tbody.innerHTML = "";
+  const hwidBody = $("hwidBody"); hwidBody.innerHTML = "";
+  let total=0, active=0, expired=0, hwid=0, dc=0;
+
+  let snap;
+  try{ snap = await rget(ref(rtdb, "users")); }
+  catch(e){ toast("Cannot read users: " + e.message, true); return; }
+
+  if(snap.exists()){
+    const users = snap.val();
+    for(const [uid, u] of Object.entries(users)){
+      total++;
+      const exp    = u.expires_at ? new Date(u.expires_at) : null;
+      const isLife = u.lifetime === true;
+      const isExp  = exp && !isLife && exp < new Date();
+      if(isLife || !isExp) active++; else expired++;
+
+      const hwidVal = u.hwid || "—";
+      if(hwidVal !== "—") hwid++;
+
+      const discordId = u.discord_id || "—";
+      if(discordId !== "—") dc++;
+
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${u.email || "—"}</td>
+        <td style="font-size:11px;color:var(--dim)">${uid.substring(0,10)}…</td>
+        <td>${isLife ? '<span class="badge on">LIFETIME</span>' :
+               (exp ? exp.toLocaleDateString() : '—')}</td>
+        <td style="font-size:11px">${hwidVal === "—" ? "—" : hwidVal.substring(0,14)+"…"}</td>
+        <td style="font-size:11px">${discordId}</td>
+        <td>${isExp ? '<span class="badge off">EXPIRED</span>' :
+               '<span class="badge on">ACTIVE</span>'}</td>
+        <td>
+          <button class="mini b" data-act="life"  data-uid="${uid}">LIFETIME</button>
+          <button class="mini e" data-act="reset" data-uid="${uid}">RESET HWID</button>
+          <button class="mini dc" data-act="edit" data-uid="${uid}"
+            data-email="${u.email||''}" data-dc="${u.discord_id||''}"
+            data-ph="${u.phone||''}">EDIT DC</button>
+          <button class="mini d" data-act="del"   data-uid="${uid}">DELETE</button>
+        </td>`;
+      tbody.appendChild(tr);
+
+      if(hwidVal !== "—"){
+        const hr = document.createElement("tr");
+        hr.innerHTML = `
+          <td>${u.email || "—"}</td>
+          <td style="font-size:11px">${hwidVal}</td>
+          <td>${u.last_seen ? new Date(u.last_seen).toLocaleString() : "—"}</td>
+          <td><button class="mini e" data-act="reset" data-uid="${uid}">RESET</button></td>`;
+        hwidBody.appendChild(hr);
+      }
+    }
+  }
+
+  $("kUsers").textContent   = total;
+  $("kActive").textContent  = active;
+  $("kExpired").textContent = expired;
+  $("kHwid").textContent    = hwid;
+  $("kDc").textContent      = dc;
+
+  document.querySelectorAll('[data-act]').forEach(b=>{
+    b.onclick = () => handleAction(b.dataset.act, b.dataset.uid, b.dataset);
+  });
+}
+
+async function handleAction(act, uid, data){
+  try{
+    if(act === "life"){
+      await rupdate(ref(rtdb, `users/${uid}`), {lifetime:true, expires_at:null});
+      toast("Lifetime granted.");
+    } else if(act === "reset"){
+      await rupdate(ref(rtdb, `users/${uid}`), {hwid:null, last_seen:null});
+      toast("HWID reset done.");
+    } else if(act === "edit"){
+      openEditDiscordModal(uid, data.email, data.dc, data.ph);
+      return;
+    } else if(act === "del"){
+      if(!confirm("Delete user record? (Auth account still remains)")) return;
+      await rremove(ref(rtdb, `users/${uid}`));
+      toast("User removed.");
+    }
+    loadUsers();
+  }catch(e){ toast(e.message, true); }
+}
+
+function openEditDiscordModal(uid, email, dc, ph){
+  const m = document.createElement("div");
+  m.className = "modal";
+  m.innerHTML = `
+    <div class="box">
+      <h3>EDIT DISCORD / PHONE</h3>
+      <label>EMAIL</label><input value="${email}" readonly />
+      <label>DISCORD ID / TAG</label>
+      <input id="mDc" value="${dc}" placeholder="user#0000 or ID" />
+      <label>PHONE (optional)</label>
+      <input id="mPh" value="${ph}" placeholder="+91..." />
+      <div style="display:flex;gap:10px;margin-top:20px">
+        <button class="mini b" style="flex:1;padding:11px" id="mCancel">CANCEL</button>
+        <button class="mini e" style="flex:1;padding:11px" id="mSave">SAVE</button>
+      </div>
+    </div>`;
+  document.body.appendChild(m);
+  $("mCancel").onclick = () => m.remove();
+  $("mSave").onclick = async () => {
+    const dc2 = $("mDc").value.trim();
+    const ph2 = $("mPh").value.trim();
+    await rupdate(ref(rtdb, `users/${uid}`), {
+      discord_id: dc2, phone: ph2, discord_verified: !!dc2
+    });
+    toast("Updated."); m.remove(); loadUsers();
+  };
+}
+
+/* ================= CREATE USER ================= */
+$("cuBtn").onclick = async () => {
+  $("cuErr").textContent = "";
+  const email   = $("cuEmail").value.trim();
+  const pass    = $("cuPass").value;
+  const phone   = $("cuPhone").value.trim();
+  const discord = $("cuDiscord").value.trim();
+  const days    = parseInt($("cuDays").value || "30");
+  const life    = $("cuLifetime").value === "yes";
+  const role    = $("cuRole").value;
+  if(!email || pass.length < 6)
+    return $("cuErr").textContent = "Email + 6-char password required.";
+
+  try{
+    const r = await fetch(
+      `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${firebaseConfig.apiKey}`,
+      {method:"POST", headers:{"Content-Type":"application/json"},
+       body: JSON.stringify({email, password: pass, returnSecureToken:false})}
+    );
+    const data = await r.json();
+    if(data.error) throw new Error(data.error.message);
+
+    const uid = data.localId;
+    const expires = life ? null : new Date(Date.now() + days*86400000).toISOString();
+
+    await rset(ref(rtdb, `users/${uid}`), {
+      email, admin: role==="admin",
+      lifetime: life, expires_at: expires,
+      hwid: null, phone: phone || null,
+      discord_id: discord || null,
+      discord_verified: !!discord,
+      created_at: Date.now()
+    });
+
+    toast("User created ✔");
+    $("cuEmail").value=""; $("cuPass").value="";
+    $("cuPhone").value=""; $("cuDiscord").value="";
+    loadUsers();
+  }catch(e){ $("cuErr").textContent = e.message; }
+};
+
+/* ================= APP CONTROL ================= */
+$("swLogin").onclick = async () => {
+  const el = $("swLogin"); const n = !el.classList.contains("on");
+  el.classList.toggle("on", n);
+  await rset(ref(rtdb, "config/login_enabled"), n);
+  toast("Login gate " + (n ? "ENABLED" : "DISABLED"));
+};
+$("swDiscord").onclick = async () => {
+  const el = $("swDiscord"); const n = !el.classList.contains("on");
+  el.classList.toggle("on", n);
+  await rset(ref(rtdb, "config/require_discord"), n);
+  toast("Discord verify " + (n ? "REQUIRED" : "DISABLED"));
+};
+$("acSave").onclick = async () => {
+  const rarName = $("acRar").value.trim() || "DataInput.rar";
+  const rarPass = $("acPass").value;
+  await rset(ref(rtdb, "config/rar_name"), rarName);
+  await rset(ref(rtdb, "config/rar_password"), rarPass);
+  toast("Config saved."); loadConfig();
+};
+
+/* ================= VERIFY QUEUE ================= */
+async function loadVerify(){
+  const tbody = $("verifyBody"); tbody.innerHTML = "";
+  try{
+    const snap = await rget(ref(rtdb, "verify_queue"));
+    if(!snap.exists()) return;
+    const q = snap.val();
+    Object.entries(q).reverse().forEach(([k, v])=>{
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td style="font-size:11px">${new Date(v.ts).toLocaleString()}</td>
+        <td>${v.email || "—"}</td>
+        <td><b style="color:#8a9bff">${v.discord_id || "—"}</b></td>
+        <td>${v.phone || "—"}</td>
+        <td>${v.status === "approved" ? '<span class="badge on">APPROVED</span>' :
+               v.status === "rejected" ? '<span class="badge off">REJECTED</span>' :
+               '<span class="badge exp">PENDING</span>'}</td>
+        <td>
+          <button class="mini e"  data-va="approve" data-k="${k}" data-uid="${v.uid}">APPROVE</button>
+          <button class="mini d"  data-va="reject"  data-k="${k}">REJECT</button>
+          <button class="mini b"  data-va="clear"   data-k="${k}">CLEAR</button>
+        </td>`;
+      tbody.appendChild(tr);
+    });
+    document.querySelectorAll('[data-va]').forEach(b=>{
+      b.onclick = () => verifyAction(b.dataset.va, b.dataset.k, b.dataset.uid);
+    });
+  }catch(e){ console.warn(e); }
+}
+
+async function verifyAction(act, key, uid){
+  try{
+    if(act === "approve"){
+      const snap = await rget(ref(rtdb, `verify_queue/${key}`));
+      const v = snap.val();
+      if(uid){
+        await rupdate(ref(rtdb, `users/${uid}`), {
+          discord_id: v.discord_id, phone: v.phone,
+          discord_verified: true, verified_at: Date.now()
+        });
+      }
+      await rupdate(ref(rtdb, `verify_queue/${key}`), {status:"approved"});
+      toast("Approved ✔");
+    } else if(act === "reject"){
+      await rupdate(ref(rtdb, `verify_queue/${key}`), {status:"rejected"});
+      toast("Rejected.");
+    } else if(act === "clear"){
+      await rremove(ref(rtdb, `verify_queue/${key}`));
+      toast("Cleared.");
+    }
+    loadVerify();
+  }catch(e){ toast(e.message, true); }
+}
+
+/* ================= MESSAGES ================= */
+async function loadMessages(){
+  const tbody = $("msgBody"); tbody.innerHTML = "";
+  try{
+    const snap = await rget(ref(rtdb, "messages"));
+    if(!snap.exists()) return;
+    const msgs = snap.val();
+    Object.entries(msgs).reverse().forEach(([k, m])=>{
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td style="font-size:11px">${new Date(m.ts).toLocaleString()}</td>
+        <td>${m.email || "anon"}</td>
+        <td style="max-width:400px">${(m.text||"").replace(/</g,"&lt;")}</td>
+        <td><button class="mini d" data-mid="${k}">CLEAR</button></td>`;
+      tbody.appendChild(tr);
+    });
+    document.querySelectorAll("[data-mid]").forEach(b=>{
+      b.onclick = async () => {
+        await rremove(ref(rtdb, "messages/" + b.dataset.mid));
+        loadMessages();
+      };
+    });
+  }catch(e){ console.warn(e); }
+}
+</script>
+</body>
+</html>
